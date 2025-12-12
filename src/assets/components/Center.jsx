@@ -12,7 +12,7 @@ const center = () => {
     e.preventDefault(); // Prevent the default form submission behavior 
     // Here you can add logic to shorten the link
     console.log('Shortening link:', VITE_BACKEND_SERVER);
-    const response = await axios.post(VITE_BACKEND_SERVER+'', { longUrl: link });
+    const response = await axios.post(VITE_BACKEND_SERVER+'/url/shorten', { longUrl: link });
     // console.log(response.data);
     setShortLink(response.data.data.shortUrl);
   };
