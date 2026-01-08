@@ -8,17 +8,17 @@ const CopyButton = ({ textToCopy }) => {
     // Function to handle the copying logic
     const handleCopy = useCallback(async () => {
         if (copyStatus === 'copied') return; // Prevent rapid clicking
-
+        if (textToCopy.trim() === '') return; // Do not copy empty text
         try {
             await navigator.clipboard.writeText(textToCopy);
             
             // Set status to 'copied'
             setCopyStatus('copied');
-            buttonClasses += ' bg-green-500 text-white hover:bg-green-600';
+            buttonClasses += ' bg-green-500 text-black hover:bg-green-600';
             // Reset status back to 'idle' after 2 seconds
-            // setTimeout(() => {
-            //     setCopyStatus('idle');
-            // }, 2000);
+            setTimeout(() => {
+                setCopyStatus('idle');
+            }, 8000);
 
         } catch (err) {
             console.error('Failed to copy text: ', err);
@@ -31,14 +31,14 @@ const CopyButton = ({ textToCopy }) => {
     }, [textToCopy, copyStatus]);
 
     // --- Tailwind CSS Classes based on Status ---
-    let buttonClasses = 'px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl rounded-lg font-semibold transition-all duration-300 flex items-center justify-center shadow-md';
+    let buttonClasses = 'px-4 py-2 bg-sky-100 hover:bg-sky-200 text-black rounded-lg transition-all duration-300 flex items-center justify-center shadow-md';
     let buttonText = 'Copy';
     let icon = (
        <Copy size={18} />
     ); // Default Copy Icon
 
     if (copyStatus === 'copied') {
-        buttonClasses += ' bg-green-500 text-white hover:bg-green-600';
+        buttonClasses += ' bg-green-500 hover:bg-green-600';
         buttonText = 'Copied!';
         icon = (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -46,7 +46,7 @@ const CopyButton = ({ textToCopy }) => {
             </svg>
         ); // Checkmark Icon
     } else if (copyStatus === 'error') {
-        buttonClasses += ' bg-red-500 text-white hover:bg-red-600';
+        buttonClasses += ' bg-red-500 hover:bg-red-600';
         buttonText = 'Error';
         icon = (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -55,7 +55,7 @@ const CopyButton = ({ textToCopy }) => {
         ); // Error Icon
     } else {
         // 'idle' state
-         buttonClasses += ' bg-indigo-500 text-white hover:bg-indigo-600';
+         buttonClasses += 'bg-indigo-500 hover:bg-indigo-600';
     }
     
     return (
